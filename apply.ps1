@@ -13,6 +13,12 @@ $profilePath = $PROFILE
 # カスタムプロファイルのパス
 $customProfilePath = Join-Path -Path (Split-Path -Parent $profilePath) -ChildPath $customProfileFileName
 
+# プロファイルおよびカスタムプロファイルの親ディレクトリが存在しない場合、作成
+$profileParentDir = Split-Path -Parent $profilePath
+if (!(Test-Path -Path $profileParentDir)) {
+    New-Item -ItemType Directory -Path $profileParentDir -Force
+}
+
 # 既存のプロファイルがある場合、かつ*.oldファイルが存在しない場合、*.oldにリネーム
 if ((Test-Path -Path $profilePath) -and !(Test-Path -Path "$profilePath.old")) {
     Rename-Item -Path $profilePath -NewName "$profilePath.old" -Force
